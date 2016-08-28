@@ -13,10 +13,10 @@ function results = extract_events(data, events, settings, params)
 
 num_channels = size(data, 1);
 conditions = fieldnames(events);
-for channel = 1:num_channels
+for channel = 1:num_channels % Loop over all channels
     curr_channel_data = data(channel,:);
-    for cond = 1:length(conditions)
-        % Take current condition (phoneme)
+    for cond = 1:length(conditions) % For each channel go over all conditions
+        % Current condition (phoneme)
         curr_cond = conditions{cond};
         results(channel).(curr_cond) = [];
         

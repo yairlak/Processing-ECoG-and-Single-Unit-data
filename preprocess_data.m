@@ -11,12 +11,16 @@ switch settings.data_type
         fprintf('Line filtering channel #%i (%i)\n', channel, num_channels)
         curr_channel_data = data.NS.Data(channel, :);
         data.NS.Data_filtered(channel, :) = remove_line_noise(curr_channel_data,params.line_frequency,params.samplingRate_data);
+        data.NS.Data_filtered(channel, :) = HighPass_Signal(params.ECoG_lowCut_freq, params.ECoG_highCut_freq, params.samplingRate_data, data.NS.Data_filtered(channel, :));
+        
     end
     
     case 'Single-unit'
 end
         
-%%
+end
 
-
+function sig = HighPass_Signal(low_cut, high_cut, SamplingRate, vec)
+   [b, a] = butter(4, ([low_cut, high_cut]/(SamplingRate/2)), 'bandpass'); % used to be 4
+   sig = filtfilt(b, a, vec);
 end
